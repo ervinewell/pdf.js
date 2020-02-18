@@ -603,8 +603,15 @@ var WidgetAnnotation = (function WidgetAnnotationClosure() {
     data.readOnly = this.hasFieldFlag(AnnotationFieldFlag.READONLY);
 
     // Hide signatures because we cannot validate them.
+    /**
+     * 关于支持电子签名的说明：
+     * https://github.com/mozilla/pdf.js/issues/1076#issuecomment-446452426
+     * 1. 由于签名验证方式繁琐，pdfjs又不愿展示未经签名的电子签名，因此选择将电子签名隐藏；修复时需要注释下面这段隐藏逻辑
+     * 2. 由于未支持电子签名，pdfjs 没有给之设置 fieldValue 属性，修复时需要手动设置
+     */
     if (data.fieldType === 'Sig') {
-      this.setFlags(AnnotationFlag.HIDDEN);
+      // this.setFlags(_util.AnnotationFlag.HIDDEN);
+      data.fieldValue = null;
     }
   }
 
